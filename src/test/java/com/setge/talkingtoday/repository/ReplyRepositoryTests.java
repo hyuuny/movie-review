@@ -17,9 +17,9 @@ public class ReplyRepositoryTests {
 
     @Test
     public void 댓글_등록한다() {
-        IntStream.rangeClosed(1 ,100).forEach(i ->{
-            long bno = (long)(Math.random() * 20) +1;
-            Board board = Board.builder().bno(bno).build();
+        IntStream.rangeClosed(1 ,5).forEach(i ->{
+//            long bno = (long)(Math.random() * 62) +1;
+            Board board = Board.builder().bno(62L).build();
             Reply reply = Reply.builder()
                     .text("댓글"+i)
                     .board(board)
