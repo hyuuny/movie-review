@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Talking ToDay</title>
@@ -8,6 +8,8 @@
 
     <h1>안녕하세요</h1>
     <h2>Talking ToDay입니다.</h2>
+
+    <a th:href="@{/board/list}">게시판</a>
 
 </body>
 </html>

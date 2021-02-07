@@ -1,16 +1,16 @@
 package com.setge.talkingtoday.repository;
 
 import com.setge.talkingtoday.entity.Board;
+import com.setge.talkingtoday.repository.search.SearchBoardRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, SearchBoardRepository {
 
     @Query("select b, m from Board b left JOIN b.member m where b.bno = :bno")
     Object getBoardWithMember(@Param("bno") Long bno);

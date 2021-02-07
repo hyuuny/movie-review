@@ -157,4 +157,7 @@ gradle-app.setting
 ### oauth.properties ###
 application-oauth.properties
 
+### etc
+LICENSE
+
 # End of https://www.toptal.com/developers/gitignore/api/intellij,macos,gradle

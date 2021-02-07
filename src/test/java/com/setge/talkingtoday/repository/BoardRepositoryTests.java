@@ -68,10 +68,22 @@ public class BoardRepositoryTests {
     }
 
     @Test
-    public void 댓글_테스트한다() {
+    public void 게시글_가져온다() {
         Object result = boardRepo.getBoardByBno(62L);
         Object[] arr = (Object[]) result;
         System.out.println(Arrays.toString(arr));
+    }
+
+    @Test
+    public void 서치_테스트() {
+        boardRepo.search1();
+    }
+
+    @Test
+    public void 서치페이지_테스트() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+        Page<Object[]> result = boardRepo.searchPage("twc", "1", pageable);
+
     }
 
 }
