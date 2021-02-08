@@ -44,6 +44,7 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     @Override
     public BoardDTO get(Long bno) {
+        boardRepo.viewCntUp(bno);
         Object result = boardRepo.getBoardByBno(bno);
         Object[] arr = (Object[]) result;
         return entityToDto((Board) arr[0], (Member) arr[1], (Long) arr[2]);

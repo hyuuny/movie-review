@@ -35,7 +35,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         jpqlQuery.leftJoin(qMember).on(qBoard.member.eq(qMember));
         jpqlQuery.leftJoin(qReply).on(qReply.board.eq(qBoard));
 
-        JPQLQuery<Tuple> tuple = jpqlQuery.select(qBoard, qMember.username, qReply.count());
+        JPQLQuery<Tuple> tuple = jpqlQuery.select(qBoard, qMember.email, qReply.count());
         tuple.groupBy(qBoard);
 
         log.info("========================");
@@ -77,7 +77,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
                         conditionBuilder.or(qBoard.title.contains(keyword));
                         break;
                     case "w":
-                        conditionBuilder.or(qMember.username.contains(keyword));
+                        conditionBuilder.or(qMember.email.contains(keyword));
                         break;
                     case "c":
                         conditionBuilder.or(qBoard.content.contains(keyword));

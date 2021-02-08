@@ -53,6 +53,7 @@ public interface BoardService {
                 .memberEmail(member.getEmail())
                 .memberName(member.getName())
                 .replyCnt(replyCnt.intValue()) // int 처리
+                .viewCnt(board.getViewCnt())
                 .build();
         return boardDTO;
     }

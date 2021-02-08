@@ -1,7 +1,6 @@
 package com.setge.talkingtoday.entity;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -22,6 +21,8 @@ public class Board extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    private int viewCnt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;

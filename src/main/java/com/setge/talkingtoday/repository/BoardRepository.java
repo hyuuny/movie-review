@@ -5,8 +5,10 @@ import com.setge.talkingtoday.repository.search.SearchBoardRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,5 +34,7 @@ public interface BoardRepository extends JpaRepository<Board, Long>, SearchBoard
             " WHERE b.bno = :bno")
     Object getBoardByBno(@Param("bno") Long bno);
 
-
+    @Modifying
+    @Query("update Board set viewCnt = viewCnt +1 where bno = :bno")
+    void viewCntUp(@Param("bno") Long bno);
 }

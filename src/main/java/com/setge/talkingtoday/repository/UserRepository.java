@@ -3,5 +3,8 @@ package com.setge.talkingtoday.repository;
 import com.setge.talkingtoday.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MemberRepository extends JpaRepository<Member, String> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<Member, Long> {
+    Optional<Member> findByEmail(String email);
 }

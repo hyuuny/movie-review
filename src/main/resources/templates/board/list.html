@@ -43,6 +43,7 @@
                 <th scope="col">제목</th>
                 <th scope="col">작성자</th>
                 <th scope="col">등록일</th>
+                <th scope="col">조회수</th>
             </tr>
             </thead>
             <tbody>
@@ -57,6 +58,7 @@
                 </a>  </td>
                 <td>[[${dto.memberName}]] <small>[[${dto.memberEmail}]]</small> </td>
                 <td>[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</td>
+                <td>[[${dto.viewCnt}]]</td>
             </tr>
 
             </tbody>

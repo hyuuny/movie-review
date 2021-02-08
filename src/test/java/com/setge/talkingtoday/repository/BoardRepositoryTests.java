@@ -1,8 +1,5 @@
 package com.setge.talkingtoday.repository;
 
-import com.setge.talkingtoday.dto.BoardDTO;
-import com.setge.talkingtoday.dto.PageRequestDTO;
-import com.setge.talkingtoday.dto.PageResultDTO;
 import com.setge.talkingtoday.entity.Board;
 import com.setge.talkingtoday.entity.Member;
 import org.junit.jupiter.api.Test;
@@ -69,7 +66,7 @@ public class BoardRepositoryTests {
 
     @Test
     public void 게시글_가져온다() {
-        Object result = boardRepo.getBoardByBno(62L);
+        Object result = boardRepo.getBoardByBno(1L);
         Object[] arr = (Object[]) result;
         System.out.println(Arrays.toString(arr));
     }
