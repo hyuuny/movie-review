@@ -57,8 +57,8 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     @Override
     public void removeWithReplies(Long bno) {
-        replyRepo.deleteByBno(bno);
-        boardRepo.deleteById(bno);
+        replyRepo.deleteByBno(bno); // 리플 먼저 삭제하고
+        boardRepo.deleteById(bno);  // 게시물 삭제
     }
 
     @Transactional

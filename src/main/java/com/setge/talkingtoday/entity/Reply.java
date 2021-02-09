@@ -19,6 +19,6 @@ public class Reply extends BaseEntity {
     private String text;
     private String replyer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // board 테이블이 필요한 경우에 가져온다.
     private Board board;
 }

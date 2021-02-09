@@ -24,7 +24,7 @@ public class Board extends BaseEntity {
 
     private int viewCnt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // member 테이블이 필요한 경우에 가져온다.
     private Member member;
 
 

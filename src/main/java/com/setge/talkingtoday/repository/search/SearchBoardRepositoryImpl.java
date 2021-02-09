@@ -12,7 +12,6 @@ import com.setge.talkingtoday.entity.QBoard;
 import com.setge.talkingtoday.entity.QMember;
 import com.setge.talkingtoday.entity.QReply;
 import lombok.extern.log4j.Log4j2;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
