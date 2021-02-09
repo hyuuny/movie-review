@@ -24,11 +24,11 @@ public class BoardRepositoryTests {
 
     @Test
     public void 게시글_등록한다() {
-        IntStream.rangeClosed(1, 20).forEach(i ->{
+        IntStream.rangeClosed(1, 10).forEach(i ->{
             Member member = Member.builder().email("user"+i+"@aaa.com").build();
             Board board = Board.builder()
-                    .title("얍삐"+i)
-                    .content("신난다"+i)
+                    .title("통통"+i)
+                    .content("팅팅볼"+i)
                     .member(member)
                     .build();
             boardRepo.save(board);
@@ -81,6 +81,14 @@ public class BoardRepositoryTests {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
         Page<Object[]> result = boardRepo.searchPage("twc", "1", pageable);
 
+    }
+
+    @Test
+    public void 제목검색_테스트한다() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending()
+                .and(Sort.by("title").ascending()));
+
+        Page<Object[]> result = boardRepo.searchPage("t", "1", pageable);
     }
 
 }

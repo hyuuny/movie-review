@@ -2,18 +2,25 @@ package com.setge.talkingtoday.repository.search;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import com.setge.talkingtoday.entity.Board;
 import com.setge.talkingtoday.entity.QBoard;
 import com.setge.talkingtoday.entity.QMember;
 import com.setge.talkingtoday.entity.QReply;
 import lombok.extern.log4j.Log4j2;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport implements SearchBoardRepository {
@@ -66,11 +73,13 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         BooleanExpression expression = qBoard.bno.gt(0L);
 
+        booleanBuilder.and(expression);
+
         if (type != null) {
             String[] typeArr = type.split("");
 
             // 검색 조건
-            BooleanBuilder conditionBuilder = new BooleanBuilder();
+            BooleanBuilder conditionBuilder = new BooleanBuilder(); // 검색조건을 conditionBuilder에 저장
             for (String t : typeArr) {
                 switch (t) {
                     case "t":
@@ -88,10 +97,26 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         }
 
         tuple.where(booleanBuilder);
+        Sort sort = pageable.getSort(); // order By
+        sort.stream().forEach(order -> {
+            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+            String prop = order.getProperty();
+
+            PathBuilder orderByExpression = new PathBuilder(Board.class, "board");
+            tuple.orderBy(new OrderSpecifier(direction, orderByExpression.get(prop)));
+        });
+
         tuple.groupBy(qBoard);
+        tuple.offset(pageable.getOffset());
+        tuple.limit(pageable.getPageSize());
         List<Tuple> result = tuple.fetch();
+
         log.info(result);
 
-        return null;
+        long count = tuple.fetchCount();
+        log.info("count : " + count);
+
+        return new PageImpl<Object[]>(result.stream().map(t -> t.toArray())
+                .collect(Collectors.toList()), pageable, count);
     }
 }
