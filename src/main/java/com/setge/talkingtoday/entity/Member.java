@@ -13,6 +13,9 @@ import javax.persistence.*;
 public class Member extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long mid;
+
     @Column(nullable = false)
     private String email;
 
@@ -20,6 +23,6 @@ public class Member extends BaseEntity {
     private String password;
 
     @Column(nullable = false)
-    private String name;
+    private String nickname;
 
 }

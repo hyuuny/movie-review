@@ -11,15 +11,15 @@ import java.util.stream.IntStream;
 public class MemberRepositoryTests {
 
     @Autowired
-    private UserRepository memberRepo;
+    private MemberRepository memberRepo;
 
     @Test
     public void 회원_추가한다() {
-        IntStream.rangeClosed(1, 10).forEach(i ->{
+        IntStream.rangeClosed(1, 100).forEach(i ->{
             Member member = Member.builder()
                     .email("user"+i+"@aaa.com")
                     .password("1234")
-                    .name("user"+i)
+                    .nickname("user"+i)
                     .build();
             memberRepo.save(member);
         });

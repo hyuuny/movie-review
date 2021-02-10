@@ -51,7 +51,7 @@ public interface BoardService {
                 .regDate(board.getRegDate())
                 .modDate(board.getModDate())
                 .memberEmail(member.getEmail())
-                .memberName(member.getName())
+                .memberName(member.getNickname())
                 .replyCnt(replyCnt.intValue()) // int 처리
                 .viewCnt(board.getViewCnt())
                 .build();
