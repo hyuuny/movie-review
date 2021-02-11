@@ -30,7 +30,7 @@ public class MovieRepositoryTests {
     @Transactional
     @Test
     public void 영화_추가한다() {
-        IntStream.rangeClosed(1, 100).forEach(i ->{
+        IntStream.rangeClosed(1, 10).forEach(i ->{
             Movie movie = Movie.builder().title("영화"+i).build();
             movieRepository.save(movie);
 
@@ -40,7 +40,7 @@ public class MovieRepositoryTests {
                 MovieImage movieImage = MovieImage.builder()
                         .uuid(UUID.randomUUID().toString())
                         .movie(movie)
-                        .imaName("image"+i+".jpg").build();
+                        .imgName("image"+i+".jpg").build();
 
                 movieImageRepository.save(movieImage);
             }

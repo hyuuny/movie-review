@@ -17,7 +17,7 @@ public class MovieImage {
     private Long inum;
 
     private String uuid;
-    private String imaName;
+    private String imgName;
     private String path;
 
     @ManyToOne(fetch = FetchType.LAZY)

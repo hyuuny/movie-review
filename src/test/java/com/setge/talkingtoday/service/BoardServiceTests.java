@@ -25,6 +25,7 @@ public class BoardServiceTests {
 
     @Test
     public void 게시글_목록가져온다() {
+        
         PageRequestDTO pageRequestDTO = new PageRequestDTO();
         PageResultDTO<BoardDTO, Object[]> result = service.getList(pageRequestDTO);
 

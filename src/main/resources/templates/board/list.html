@@ -56,7 +56,7 @@
                     keyword = ${pageRequestDTO.keyword})}">
                     [[${dto.title}]][<b th:text="${dto.replyCnt}"></b>]
                 </a>  </td>
-                <td>[[${dto.memberName}]] <small>[[${dto.memberEmail}]]</small> </td>
+                <td>[[${dto.memberNickname}]] <small>[[${dto.memberEmail}]]</small> </td>
                 <td>[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</td>
                 <td>[[${dto.viewCnt}]]</td>
             </tr>

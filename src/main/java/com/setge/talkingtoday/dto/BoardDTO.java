@@ -15,7 +15,7 @@ public class BoardDTO {
     private String title;
     private String content;
     private String memberEmail;
-    private String memberName;
+    private String memberNickname;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
     private int replyCnt;
