@@ -95,12 +95,17 @@ public class ImageFileUploadController {
      * @return byte[]
      */
     @GetMapping("/display")
-    public ResponseEntity<byte[]> getFile(String fileName) {
+    public ResponseEntity<byte[]> getFile(String fileName, String size) {
         ResponseEntity<byte[]> result = null;
 
         try {
             String srcFileName = URLDecoder.decode(fileName, "UTF-8");
             File file = new File(uploadPath + File.separator + srcFileName);
+
+            if (size != null && size.equals("1")) {
+                // 원본 파일 전송
+                file = new File(file.getParent(), file.getName().substring(2));
+            }
             HttpHeaders header = new HttpHeaders();
 
             // MIME Type

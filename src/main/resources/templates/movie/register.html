@@ -5,7 +5,7 @@
 
     <th:block th:fragment="content">
 
-        <h1 class="mt-4">영화 등록 페이지</h1>
+        <h1 class="mt-4">리뷰 등록</h1>
 
         <form th:action="@{/movie/register}" th:method="post">
             <div class="form-group">
@@ -58,11 +58,24 @@
                 </ul>
             </div>
             <button type="submit" class="btn btn-primary">업로드</button>
-            <button type="button" class="btn btn-success">취소</button>
+            <button type="button" class="btn btn-success listBtn">취소</button>
         </form>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
+
+            let actionForm = $("form"); //form 태그 객체
+
+            // 취소버튼 누르면 목록으로..
+            $(".listBtn").click(function () {
+
+                actionForm
+                    .attr("action", "/movie/list")
+                    .attr("method", "get");
+
+                actionForm.submit();
+            });
+
             $(document).ready(function (e) {
 
                 let regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");

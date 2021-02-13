@@ -13,9 +13,28 @@
             </span>
         </h1>
 
+
         <form action="/movie/list" method="get" id="searchForm">
-            <input type="hidden" name="page" value="1">
+            <div class="input-group">
+                <input type="hidden" name="page" value = "1">
+                <div class="input-group-prepend">
+                    <select class="custom-select" name="type">
+                        <option th:selected="${pageRequestDTO.type == null}">-------</option>
+                        <option value="t" th:selected="${pageRequestDTO.type =='t'}" >제목</option>
+                        <option value="t" th:selected="${pageRequestDTO.type =='c'}"  >내용</option>
+                        <option value="t"  th:selected="${pageRequestDTO.type =='w'}" >작성자</option>
+                        <option value="tc"  th:selected="${pageRequestDTO.type =='tc'}" >제목 + 내용</option>
+                        <option value="tcw"  th:selected="${pageRequestDTO.type =='tcw'}" >제목 + 내용 + 작성자</option>
+                    </select>
+                </div>
+                <input class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                <div class="input-group-append" id="button-addon4">
+                    <button class="btn btn-outline-secondary btn-search" type="button">검색</button>
+                    <button class="btn btn-outline-secondary btn-clear" type="button">초기화</button>
+                </div>
+            </div>
         </form>
+
 
         <table class="table table-striped">
 
@@ -30,13 +49,13 @@
             </thead>
 
             <tbody>
-            <tr th:each="dto : ${result.dtoList}" >
+            <tr th:each="dto : ${result.dtoList}">
                 <th scope="row">[[${dto.mno}]]</th>
                 <td>
                     <a th:href="@{/movie/read(mno = ${dto.mno}, page= ${result.page})}">
-                    <img th:if="${dto.imageDTOList.size() > 0 && dto.imageDTOList[0].path != null }"
-                         th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|" >
-                    [[${dto.title}]]</a></td>
+                        <img th:if="${dto.imageDTOList.size() > 0 && dto.imageDTOList[0].path != null }"
+                             th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|">
+                        [[${dto.title}]]</a></td>
                 <td><b>[[${dto.reviewCnt}]]</b></td>
                 <td><b>[[${dto.avg}]]</b></td>
                 <td>[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</td>
@@ -45,7 +64,7 @@
             </tbody>
         </table>
 
-<!--        페이징-->
+        <!--        페이징-->
         <ul class="pagination h-100 justify-content-center align-items-center">
 
             <li class="page-item " th:if="${result.prev}">
@@ -70,7 +89,52 @@
 
         </ul>
 
+
+        <div class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">알리미</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>요청을 정상적으로 처리하였습니다.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <script th:inline="javascript">
+
+            let msg = [[${msg}]];
+
+            console.log(msg);
+
+            if (msg) {
+                $(".modal").modal();
+            }
+
+            // 검색 기능
+            let searchForm = $("#searchForm");
+
+            $('.btn-search').click(function(e){
+
+                searchForm.submit();
+
+            });
+
+            $('.btn-clear').click(function(e){
+
+                searchForm.empty().submit();
+
+            });
 
         </script>
 

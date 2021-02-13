@@ -20,6 +20,10 @@ public interface MovieService {
 
     MovieDTO getMovie(Long mno);
 
+    void removeWithImageAndReplies(Long mno);
+
+    void modify(MovieDTO movieDTO);
+
 
     /**
      *

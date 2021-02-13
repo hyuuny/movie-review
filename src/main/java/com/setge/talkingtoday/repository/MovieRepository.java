@@ -1,6 +1,7 @@
 package com.setge.talkingtoday.repository;
 
 import com.setge.talkingtoday.entity.Movie;
+import com.setge.talkingtoday.repository.search.SearchBoardRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface MovieRepository extends JpaRepository<Movie, Long> {
+public interface MovieRepository extends JpaRepository<Movie, Long>, SearchBoardRepository {
 
     @Query("select m, mi, avg(coalesce(r.grade,0)),  count(r) from Movie m " +
             "left outer join MovieImage mi on mi.movie = m " +

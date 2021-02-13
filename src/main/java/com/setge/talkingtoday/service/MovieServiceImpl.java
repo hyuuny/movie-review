@@ -7,12 +7,14 @@ import com.setge.talkingtoday.entity.Movie;
 import com.setge.talkingtoday.entity.MovieImage;
 import com.setge.talkingtoday.repository.MovieImageRepository;
 import com.setge.talkingtoday.repository.MovieRepository;
+import com.setge.talkingtoday.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +29,7 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepo;
     private final MovieImageRepository movieImageRepo;
+    private final ReviewRepository reviewRepo;
 
     @Override
     public Long register(MovieDTO movieDTO) {
@@ -72,5 +75,21 @@ public class MovieServiceImpl implements MovieService {
         Long reviewCnt = (Long) result.get(0)[3];
 
         return entitiesToDto(movie, movieImageList, avg, reviewCnt);
+    }
+
+    @Transactional
+    @Override
+    public void removeWithImageAndReplies(Long mno) {
+        reviewRepo.deleteByMno(mno); // 리뷰 삭제하고
+        movieImageRepo.deleteByMno(mno); // 첨부 이미지 삭제하고
+        movieRepo.deleteById(mno); // 게시물 삭제
+    }
+
+    @Override
+    public void modify(MovieDTO movieDTO) {
+        Movie movie = movieRepo.getOne(movieDTO.getMno()); // 폼에서 넘어온 id값 movie객체 저장
+        movie.changeTitle(movieDTO.getTitle());
+
+        movieRepo.save(movie);
     }
 }

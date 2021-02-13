@@ -6,6 +6,7 @@ import com.setge.talkingtoday.dto.PageResultDTO;
 import com.setge.talkingtoday.entity.Board;
 import com.setge.talkingtoday.entity.Member;
 import com.setge.talkingtoday.repository.BoardRepository;
+import com.setge.talkingtoday.repository.MemberRepository;
 import com.setge.talkingtoday.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
