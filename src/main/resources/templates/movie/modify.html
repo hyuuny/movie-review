@@ -19,19 +19,16 @@
                 <input type="text" class="form-control" name="title" th:value="${dto.title}">
             </div>
 
-            <div class="form-group">
-                <label>리뷰 수 </label>
-                <input type="text" class="form-control" name="reviewCnt" th:value="${dto.reviewCnt}" readonly>
-            </div>
-
-            <div class="form-group">
-                <label>평균평점 </label>
-                <input type="text" class="form-control" name="avg" th:value="${dto.avg}" readonly>
-            </div>
-
             <!--            리뷰 삭제시 필요한 mno 히든 값-->
             <input type="hidden" class="form-control" name="mno" th:value="${dto.mno}">
 
+            <div class="form-group fileForm">
+                <label>이미지 파일</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input files" id="fileInput" multiple>
+                    <label class="custom-file-label" data-browse="파일업로드"></label>
+                </div>
+            </div>
 
             <div class="box">
 
@@ -65,29 +62,11 @@
                 }
             </style>
 
-            <div class="form-group fileForm">
-                <label>이미지 파일</label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input files" id="fileInput" multiple>
-                    <label class="custom-file-label" data-browse="파일업로드"></label>
-                </div>
-            </div>
-
             <div class="uploadResult">
                 <ul>
-                    <li th:each="movieImage: ${dto.imageDTOList}" th:data-file="${movieImage.getThumbnailURL()}">
 
-                        <div>
-                            <button type='button' data-file='\ + obj.imageURL + \' class='btn-warning btn-sm'>X</button>
-                            <br>
-                        </div>
-                        <img th:if="${movieImage.path != null}"
-                             th:src="|/display?fileName=${movieImage.getThumbnailURL()}|">
-
-                    </li>
                 </ul>
             </div>
-
 
             <button type="button" class="btn btn-primary modifyBtn">수정</button>
             <button type="button" class="btn btn-info listBtn">목록</button>
@@ -102,52 +81,6 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script th:inline="javascript">
-
-    let actionForm = $("form"); //form 태그 객체
-
-    $(".removeBtn").click(function () {
-
-        if (!(confirm("삭제하시겠습니까?"))) {
-            return;
-        }
-
-        actionForm
-            .attr("action", "/movie/remove")
-            .attr("method", "post");
-
-        actionForm.submit();
-    });
-
-    $(".modifyBtn").click(function () {
-
-        if (!confirm("수정하시겠습니까?")) {
-            return;
-        }
-
-        actionForm
-            .attr("action", "/movie/modify")
-            .attr("method", "post")
-            .submit();
-    });
-
-    $(".listBtn").click(function () {
-
-        let page = $("input[name='page']");
-        let type = $("input[name='type']");
-        let keyword = $("input[name='keyword']");
-
-        actionForm.empty(); //form 태그의 모든 내용을 지우고
-
-        actionForm.append(page);
-        actionForm.append(type);
-        actionForm.append(keyword);
-
-        actionForm
-            .attr("action", "/movie/list")
-            .attr("method", "get");
-
-        actionForm.submit();
-    });
 
     $(document).ready(function (e) {
 
@@ -266,6 +199,50 @@
             });
             // <div class='box'> 내에 히든태그 만들어 전송
             $(".box").html(str);
+        });
+
+
+        let actionForm = $("form"); //form 태그 객체
+
+        $(".removeBtn").click(function () {
+
+            if (!(confirm("삭제하시겠습니까?"))) {
+                return;
+            }
+
+            actionForm
+                .attr("action", "/movie/remove")
+                .attr("method", "post");
+
+            actionForm.submit();
+        });
+
+        $(".modifyBtn").click(function () {
+
+            if (!confirm("수정하시겠습니까?")) {
+                return;
+            }
+
+            actionForm.submit();
+        });
+
+        $(".listBtn").click(function () {
+
+            let page = $("input[name='page']");
+            let type = $("input[name='type']");
+            let keyword = $("input[name='keyword']");
+
+            actionForm.empty(); //form 태그의 모든 내용을 지우고
+
+            actionForm.append(page);
+            actionForm.append(type);
+            actionForm.append(keyword);
+
+            actionForm
+                .attr("action", "/movie/list")
+                .attr("method", "get");
+
+            actionForm.submit();
         });
 
     }); // end document

@@ -119,7 +119,7 @@
                         return;
                     }
 
-                    for (var value of formData.values()) {
+                    for (let value of formData.values()) {
                         console.log(value);
                     }
 
@@ -160,36 +160,36 @@
                     uploadUL.append(str);
                 } // end showResult
 
-                $(".uploadResult").on("click", "li button", function (e){
-                   console.log("delete")
+                $(".uploadResult").on("click", "li button", function (e) {
+                    console.log("delete")
 
-                   let targetFile = $(this).data("file");
-                   let targetLi = $(this).closest("li");
+                    let targetFile = $(this).data("file");
+                    let targetLi = $(this).closest("li");
 
-                   $.ajax({
-                       url: '/removeFile', // imageFileUploadController
-                       data: {fileName: targetFile},
-                       dataType: 'text',
-                       type: 'POST',
-                       success: function (result) {
-                           swal("파일 삭제 성공", "파일을 삭제하였습니다.", "success");
-                           targetLi.remove();
-                       }
-                   }) // end aJax
+                    $.ajax({
+                        url: '/removeFile', // imageFileUploadController
+                        data: {fileName: targetFile},
+                        dataType: 'text',
+                        type: 'POST',
+                        success: function (result) {
+                            swal("파일 삭제 성공", "파일을 삭제하였습니다.", "success");
+                            targetLi.remove();
+                        }
+                    }) // end aJax
                 }); // end deleteFile
 
                 // 파일 업로드 전송
-                $(".btn-primary").on("click", function (e){
+                $(".btn-primary").on("click", function (e) {
 
                     let str = "";
 
-                    $(".uploadResult li").each(function (i, obj){
-                       let target = $(obj);
+                    $(".uploadResult li").each(function (i, obj) {
+                        let target = $(obj);
                         console.log("target : " + target);
 
-                       str += "<input type='hidden' name='imageDTOList["+i+"].imgName' value='"+target.data('name')+"'>";
-                       str += "<input type='hidden' name='imageDTOList["+i+"].path' value='"+target.data('path')+"'>";
-                       str += "<input type='hidden' name='imageDTOList["+i+"].uuid' value='"+target.data('uuid')+"'>";
+                        str += "<input type='hidden' name='imageDTOList[" + i + "].imgName' value='" + target.data('name') + "'>";
+                        str += "<input type='hidden' name='imageDTOList[" + i + "].path' value='" + target.data('path') + "'>";
+                        str += "<input type='hidden' name='imageDTOList[" + i + "].uuid' value='" + target.data('uuid') + "'>";
                     });
                     // <div class='box'> 내에 히든태그 만들어 전송
                     $(".box").html(str);
