@@ -3,6 +3,8 @@ package com.setge.talkingtoday.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -21,5 +23,13 @@ public class Member extends BaseEntity {
 
     private String password;
     private String nickname;
+    private boolean fromSocial;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<Role> roleSet = new HashSet<>();
+
+    public void addMemberRole(Role role) {
+        roleSet.add(role);
+    }
 }
