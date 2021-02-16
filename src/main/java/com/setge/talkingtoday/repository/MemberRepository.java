@@ -12,4 +12,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @EntityGraph(attributePaths = {"roleSet"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("select m from Member m where m.fromSocial = :social and m.email =:email")
     Optional<Member> findByEmail(String email, boolean social);
+
+
 }

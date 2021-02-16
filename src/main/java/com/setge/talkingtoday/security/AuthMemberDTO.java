@@ -24,6 +24,7 @@ public class AuthMemberDTO extends User implements OAuth2User {
     private boolean fromSocial;
     private Map<String, Object> attr;
 
+
     public AuthMemberDTO(Long mid, String username, String password, String nickname,
                          boolean fromSocial, Collection<? extends GrantedAuthority> authorities,
                          Map<String, Object> attr) {
