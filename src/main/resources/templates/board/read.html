@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 
 
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
@@ -39,9 +41,11 @@
                    th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
         </div>
 
+        <div th:if="${dto.getMemberMid} == ${memberDTO.getMid}">
         <a th:href="@{/board/modify(bno = ${dto.bno}, page=${requestDTO.page}, type=${requestDTO.type}, keyword =${requestDTO.keyword})}">
             <button type="button" class="btn btn-primary">수정</button>
         </a>
+        </div>
 
         <a th:href="@{/board/list(page=${requestDTO.page} , type=${requestDTO.type}, keyword =${requestDTO.keyword})}">
             <button type="button" class="btn btn-info">목록</button>
@@ -54,7 +58,8 @@
                 <h5><span class="badge badge-secondary replyCount">리플 수 [[${dto.replyCnt}]]</span></h5>
             </div>
             <hr>
-            <h4 th:if="${dto.replyCnt == 0}" th:style="'text-align:center; margin-bottom:5%; padding-top:2%'"> 댓글을 등록해주세요</h4>
+            <h4 th:if="${dto.replyCnt == 0}" th:style="'text-align:center; margin-bottom:5%; padding-top:2%'"> 댓글을
+                등록해주세요</h4>
             <div class="list-group replyList">
             </div>
         </div>
@@ -72,26 +77,39 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <input class="form-control"  type="text" name="replyText" placeholder="내용을 입력하세요">
+                            <input class="form-control" type="text" name="replyText" placeholder="내용을 입력하세요">
                         </div>
                         <div class="form-group">
-                            <input class="form-control"  type="text" name="replyer" placeholder="Replyer">
-                            <input type="hidden" name="rno" >
+                            <input class="form-control" type="text" name="replyer" th:value="${memberDTO.getNickname}"
+                                   readonly>
+                            <input type="hidden" name="rno">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger replyRemove">댓글 삭제</button>
                         <button type="button" class="btn btn-warning replyModify">댓글 수정</button>
                         <button type="button" class="btn btn-primary replySave">댓글 등록</button>
-                        <button type="button" class="btn btn-outline-secondary replyClose" data-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-outline-secondary replyClose" data-dismiss="modal">닫기
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
 
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script th:inline="javascript">
             $(document).ready(function () {
+
+                // 403 에러 해결
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
+                $(function() {
+                    $(document).ajaxSend(function(e, xhr, options) {
+                        xhr.setRequestHeader(header, token);
+                    });
+                });
+
                 let bno = [[${dto.bno}]];
                 let listGroup = $(".replyList");
 
@@ -112,12 +130,12 @@
 
                         $('.replyCount').html(" 리플 수 " + arr.length);
 
-                        $.each(arr, function (idx, reply){
-                            console.log("reply:"+reply);
+                        $.each(arr, function (idx, reply) {
+                            console.log("reply:" + reply);
                             // str += '    <div class="card-body" data-rno="'+reply.rno+'"><b>'+reply.rno +'</b>';
-                            str += '    <h5 class="card-title">'+reply.text+'</h5>';
-                            str += '    <h6 class="card-subtitle mb-2 text-muted">작성자 : '+reply.replyer+'</h6>';
-                            str += '    <p class="card-text">'+ formatTime(reply.regDate) +'</p>';
+                            str += '    <h5 class="card-title">' + reply.text + '</h5>';
+                            str += '    <h6 class="card-subtitle mb-2 text-muted">작성자 : ' + reply.replyer + '</h6>';
+                            str += '    <p class="card-text">' + formatTime(reply.regDate) + '</p>';
                             str += '    <hr></div>';
                         })
                         listGroup.html(str);
@@ -128,42 +146,42 @@
 
                 let modal = $('.modal');
 
-                $(".addReply").click(function (){
+                $(".addReply").click(function () {
                     modal.modal('show');
 
                     // 댓글 입력 영역 clear
                     $('input[name="replyText"]').val('');
-                    $('input[name="replyer"]').val('');
+                    $('input[name="replyer"]').val();
 
                     $(".modal-footer .btn").hide();
                     $(".replySave, .replyClose").show(); // 댓글 등록은 저장과 닫기버튼만 활성화
                 }) // end addReply
 
-                $('.replySave').click(function (){
-                   let reply = {
-                       bno : bno,
-                       text : $('input[name="replyText"]').val(),
-                       replyer : $('input[name="replyer"]').val()
-                   }
-                   $.ajax({
-                       url: '/replies/',
-                       method: 'post',
-                       data: JSON.stringify(reply),
-                       contentType: 'application/json; charset=utf-8',
-                       dataType: 'json',
-                       success: function (data){
-                           console.log("댓글 등록 ; " + data);
+                $('.replySave').click(function () {
+                    let reply = {
+                        bno: bno,
+                        text: $('input[name="replyText"]').val(),
+                        replyer: $('input[name="replyer"]').val()
+                    }
+                    $.ajax({
+                        url: '/replies/',
+                        method: 'post',
+                        data: JSON.stringify(reply),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log("댓글 등록 ; " + data);
 
-                           let newRno = parseInt(data);
+                            let newRno = parseInt(data);
 
-                           swal("댓글 등록", newRno + "번 댓글이 등록되었습니다", "success");
-                           modal.modal('hide');
-                           loadJSONData();
-                       }
-                   })
+                            swal("댓글 등록", newRno + "번 댓글이 등록되었습니다", "success");
+                            modal.modal('hide');
+                            loadJSONData();
+                        }
+                    })
                 }); // end registerReply
 
-                $('.replyList').on("click", ".card-body", function (){
+                $('.replyList').on("click", ".card-body", function () {
                     let rno = $(this).data("rno");
 
                     $("input[name='replyText']").val($(this).find('.card-title').html());
@@ -176,11 +194,11 @@
                     modal.modal('show');
                 }); // end modifyReply
 
-                $(".replyRemove").on("click", function (){
+                $(".replyRemove").on("click", function () {
                     let rno = $("input[name='rno']").val();
 
                     $.ajax({
-                        url: '/replies/'+rno,
+                        url: '/replies/' + rno,
                         method: 'delete',
                         success: function (result) {
                             if (result === 'success') {
@@ -192,7 +210,7 @@
                     })
                 }) // end removeReply
 
-                $(".replyModify").click(function (){
+                $(".replyModify").click(function () {
                     let rno = $("input[name='rno']").val();
 
                     let reply = {
@@ -203,11 +221,11 @@
                     }
 
                     $.ajax({
-                        url: '/replies/'+rno,
-                        method:'put',
+                        url: '/replies/' + rno,
+                        method: 'put',
                         data: JSON.stringify(reply),
                         contentType: 'application/json; charset=utf-8',
-                        success: function (result){
+                        success: function (result) {
                             if (result === 'success') {
                                 swal("댓글 수정", rno + "번 댓글을 수정하였습니다..", "success");
                                 modal.modal('hide');

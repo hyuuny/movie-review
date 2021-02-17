@@ -14,6 +14,7 @@ public class BoardDTO {
     private Long bno;
     private String title;
     private String content;
+    private Long memberMid;
     private String memberEmail;
     private String memberNickname;
     private LocalDateTime regDate;

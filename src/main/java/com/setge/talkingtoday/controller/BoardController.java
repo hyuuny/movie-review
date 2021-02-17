@@ -2,9 +2,12 @@ package com.setge.talkingtoday.controller;
 
 import com.setge.talkingtoday.dto.BoardDTO;
 import com.setge.talkingtoday.dto.PageRequestDTO;
+import com.setge.talkingtoday.security.AuthMemberDTO;
 import com.setge.talkingtoday.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +30,8 @@ public class BoardController {
     }
 
     @GetMapping("/register")
-    public void registerForm() {
-
+    public void registerForm(@AuthenticationPrincipal AuthMemberDTO authMemberDTO, Model model) {
+        model.addAttribute("memberDTO", authMemberDTO);
     }
 
     @PostMapping("/register")
@@ -40,12 +43,12 @@ public class BoardController {
 
     @GetMapping({"/read", "/modify"})
     public void readPage(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long bno,
-                         Model model) {
+                         Model model, @AuthenticationPrincipal AuthMemberDTO authMemberDTO) {
         log.info(bno + "번 게시글 조회");
 
         BoardDTO boardDTO = boardService.get(bno);
-        System.out.println("boardDTO : " + boardDTO);
         model.addAttribute("dto", boardDTO);
+        model.addAttribute("memberDTO", authMemberDTO);
     }
 
     @PostMapping("/remove")

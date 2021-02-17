@@ -2,7 +2,6 @@ package com.setge.talkingtoday.service;
 
 import com.setge.talkingtoday.dto.MemberDTO;
 import com.setge.talkingtoday.entity.Member;
-import com.setge.talkingtoday.security.AuthMemberDTO;
 
 public interface MemberService {
 

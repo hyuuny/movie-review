@@ -25,7 +25,7 @@ public interface BoardService {
      * @return board(Entity)
      */
     default Board dtoToEntity(BoardDTO dto) {
-        Member member = Member.builder().email(dto.getMemberEmail()).build();
+        Member member = Member.builder().mid(dto.getMemberMid()).build();
 
         Board board = Board.builder()
                 .bno(dto.getBno())
@@ -50,6 +50,7 @@ public interface BoardService {
                 .content(board.getContent())
                 .regDate(board.getRegDate())
                 .modDate(board.getModDate())
+                .memberMid(member.getMid())
                 .memberEmail(member.getEmail())
                 .memberNickname(member.getNickname())
                 .replyCnt(replyCnt.intValue()) // int 처리

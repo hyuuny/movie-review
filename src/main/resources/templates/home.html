@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
@@ -8,11 +9,19 @@
         <h1>안녕하세요</h1>
         <h2>무비입니다.</h2>
 
-        <form th:method="get" th:action="@{/customlogin}">
-            <input type="submit" class="btn-success" value="로그인">
+        <form th:method="get" sec:authorize="isAnonymous()" th:action="@{/member/signup}">
+            <input type="submit" class="btn-success" value="회원가입">
         </form>
 
-        <form th:method="post" th:action="@{/logout}">
+        <form th:method="get" sec:authorize="isAnonymous()" th:action="@{/customlogin}">
+            <input type="submit" class="btn-primary" value="로그인">
+        </form>
+
+        <form th:method="get" sec:authorize="isAuthenticated()" th:action="@{member/member-info}">
+            <input type="submit" class="btn-info" value="내 정보">
+        </form>
+
+        <form th:method="post" sec:authorize="isAuthenticated()" th:action="@{/logout}">
             <input type="submit" class="btn-dark" value="로그아웃">
         </form>
         <br/>

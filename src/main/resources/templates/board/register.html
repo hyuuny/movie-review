@@ -13,14 +13,20 @@
                 <label >제목</label>
                 <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요">
             </div>
+
+            <div class="form-group">
+                <label >작성자</label>
+                <input type="email" class="form-control" name="memberNickname" th:value="${memberDTO.getNickname}" readonly>
+            </div>
+
             <div class="form-group">
                 <label >내용</label>
                 <textarea class="form-control" rows="5" name="content"></textarea>
             </div>
-            <div class="form-group">
-                <label >작성자</label>
-                <input type="email" class="form-control" name="memberEmail">
-            </div>
+
+            <input type="hidden" name="memberMid" th:value="${memberDTO.getMid}">
+            <input type="hidden" name="memberEmail" th:value="${memberDTO.getEmail}">
+
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

@@ -30,7 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/member/member-info", "/movie/read", "/movie/register", "/board/**")
+                .antMatchers("/member/member-info", "/movie/read", "/movie/register", "/board/**",
+                        "/replies/**")
                 .hasRole("USER")
                 .antMatchers("/member/admin")
                 .hasRole("ADMIN")
@@ -57,10 +58,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new LoginSuccessHandler();
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication().withUser("user1")
-//                .password("$2a$10$a1tpiIedzvQcwEjravFxIuy.NzL19AYDjCSCK9Om7esB9TCYaefAS")
-//                .roles("USER");
-//    }
 }

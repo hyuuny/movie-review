@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,31 +21,31 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/member-info")
-    public void member(@AuthenticationPrincipal AuthMemberDTO authMemberDTO) {
-        log.info("로그인 회원 : " + authMemberDTO);
-    }
 
     @GetMapping("/admin")
     public void admin() {
         log.info("admin..");
     }
 
-    @GetMapping("/register")
-    public void registerForm() {
-
+    @GetMapping("/signup")
+    public void signupForm(Model model) {
+        model.addAttribute("memberDTO", new MemberDTO());
     }
 
-    @PostMapping("/register")
-    public String resisterPost(@Valid MemberDTO dto, Errors errors) {
+    @PostMapping("/signup")
+    public String signupPost(@Valid MemberDTO dto, BindingResult bindingResult) {
 
-        if (errors.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             log.info("register is not valid");
-            return "/member/register";
+            return "/member/signup";
         }
-
-        memberService.register(dto);
         return "redirect:/";
     }
+
+    @GetMapping("/member-info")
+    public void member(@AuthenticationPrincipal AuthMemberDTO authMemberDTO) {
+        log.info("로그인 회원 : " + authMemberDTO);
+    }
+
 
 }

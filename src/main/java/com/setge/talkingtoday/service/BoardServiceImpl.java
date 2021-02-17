@@ -27,6 +27,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Long register(BoardDTO dto) {
+        System.out.println("얍비 : " + dto);
         Board board = dtoToEntity(dto);
         boardRepo.save(board);
         return board.getBno();

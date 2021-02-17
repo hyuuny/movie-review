@@ -1,38 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:sec="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>For Member ....................</h1>
+<html xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
-<div sec:authorize="hasRole('USER')">Has USER ROLE</div>
-<div sec:authorize="hasRole('MANAGER')">Has MANAGER ROLE</div>
-<div sec:authorize="hasRole('ADMIN')">Has ADMIN ROLE</div>
+    <th:block th:fragment="content">
 
-<div sec:authorize="isAuthenticated()">
-    Only Authenticated user can see this Text
-</div>
+        <h1>회원 정보</h1>
 
-회원번호 :
-<div sec:authentication="principal.mid"></div>
+        <div sec:authorize="hasRole('USER')">SETGE 회원</div>
+        <div sec:authorize="hasRole('MANAGER')">SETGE 매니저</div>
+        <div sec:authorize="hasRole('ADMIN')">SETGE 관리자</div>
 
-email :
-<div sec:authentication="principal.email"></div>
 
-닉네임 :
-<div sec:authentication="principal.nickname"></div>
+        <div class="form-group">
+            회원번호 : <p sec:authentication="principal.mid"></p>
+        </div>
 
-소셜여부 :
-<div sec:authentication="principal.fromSocial"></div>
+        <div class="form-group">
+            email :
+            <div sec:authentication="principal.email"></div>
+        </div>
 
-권한 :
-<div sec:authentication="principal.authorities">
+        <div class="form-group">
+            닉네임 :
+            <div sec:authentication="principal.nickname"></div>
+        </div>
 
-</div>
+        <div class="form-group">
+            소셜여부 :
+            <div sec:authentication="principal.fromSocial"></div>
+        </div>
 
-</div>
+        <div class="form-group">
+            권한 :
+            <div sec:authentication="principal.authorities">
+            </div>
+        </div>
 
-</body>
+    </th:block>
+</th:block>
+
 </html>
