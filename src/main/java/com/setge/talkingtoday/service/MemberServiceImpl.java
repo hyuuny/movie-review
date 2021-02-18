@@ -34,4 +34,25 @@ public class MemberServiceImpl implements MemberService {
         return member.getMid();
     }
 
+    @Override
+    public int duplicateEmailCheck(String email) {
+        Optional<Member> result = memberRepo.findByEmail(email);
+        return result.isPresent() ? 1 : 0;
+    }
+
+    @Override
+    public int duplicateNicknameCheck(String nickname) {
+        Optional<Member> result = memberRepo.findByNickname(nickname);
+        return result.isPresent() ? 1 : 0;
+    }
+
+    @Override
+    public void modify(String password, Long mid) {
+        Member member = memberRepo.findById(mid).get();
+
+
+
+    }
+
+
 }

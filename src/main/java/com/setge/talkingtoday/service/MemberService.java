@@ -7,6 +7,12 @@ public interface MemberService {
 
     Long register(MemberDTO dto);
 
+    int duplicateEmailCheck(String email);
+
+    int duplicateNicknameCheck(String nickname);
+
+    void modify(String password, Long mid);
+
 
     /**
      *

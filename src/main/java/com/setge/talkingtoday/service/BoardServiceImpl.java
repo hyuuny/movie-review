@@ -27,7 +27,6 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Long register(BoardDTO dto) {
-        System.out.println("얍비 : " + dto);
         Board board = dtoToEntity(dto);
         boardRepo.save(board);
         return board.getBno();
@@ -50,7 +49,7 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     @Override
     public BoardDTO get(Long bno) {
-        boardRepo.viewCntUp(bno);
+        boardRepo.viewCntUp(bno);   // 조회수 증가
         Object result = boardRepo.getBoardByBno(bno);
         Object[] arr = (Object[]) result;
         return entityToDto((Board) arr[0], (Member) arr[1], (Long) arr[2]);

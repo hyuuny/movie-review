@@ -7,35 +7,34 @@
 
         <h1>회원 정보</h1>
 
-        <div sec:authorize="hasRole('USER')">SETGE 회원</div>
-        <div sec:authorize="hasRole('MANAGER')">SETGE 매니저</div>
-        <div sec:authorize="hasRole('ADMIN')">SETGE 관리자</div>
+        <h4 sec:authorize="hasRole('USER')">SETGE 회원</h4>
+        <h4 sec:authorize="hasRole('MANAGER')">SETGE 매니저</h4>
+        <h4 sec:authorize="hasRole('ADMIN')">SETGE 관리자</h4>
+        <br />
 
 
         <div class="form-group">
-            회원번호 : <p sec:authentication="principal.mid"></p>
+            회원번호 : <span type="text" sec:authentication="principal.mid"></span>
         </div>
 
         <div class="form-group">
-            email :
-            <div sec:authentication="principal.email"></div>
+            email : <span sec:authentication="principal.email"></span>
         </div>
 
         <div class="form-group">
-            닉네임 :
-            <div sec:authentication="principal.nickname"></div>
+            닉네임 : <input type="text" sec:authentication="principal.nickname">
         </div>
 
         <div class="form-group">
-            소셜여부 :
-            <div sec:authentication="principal.fromSocial"></div>
+            소셜여부 : <span sec:authentication="principal.fromSocial"></span>
         </div>
 
         <div class="form-group">
-            권한 :
-            <div sec:authentication="principal.authorities">
-            </div>
+            등급 : <span sec:authentication="principal.authorities"></span>
         </div>
+
+        <a th:href="@{/member/modify}" th:action="get" class="btn btn-success">비밀번호 변경</a>
+        <a th:href="@{/}" th:action="get" class="btn btn-info">홈</a>
 
     </th:block>
 </th:block>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
@@ -8,12 +8,13 @@
         <h1 class="mt-4">자유게시판
             <span>
                 <a th:href="@{/board/register}">
-                    <button type="button" class="btn btn-outline-primary">게시글등록
-                    </button>
+                    <button type="button" class="btn btn-outline-primary">게시글등록</button>
                 </a>
             </span>
+
         </h1>
 
+            <span style="font-size: 20px" sec:authentication="name"></span>님 <br />방문해주셔서 감사합니다.
 
         <form action="/board/list" method="get" id="searchForm">
             <div class="input-group">
@@ -101,8 +102,8 @@
                         <p>요청을 정상적으로 처리하였습니다.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+<!--                        <button type="button" class="btn btn-primary">Save changes</button>-->
                     </div>
                 </div>
             </div>

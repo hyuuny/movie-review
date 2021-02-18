@@ -24,8 +24,6 @@ public class ReplyController {
 
     @PostMapping()
     public ResponseEntity<Long> register(@RequestBody ReplyDTO replyDTO) {
-        System.out.println("제발 : " + replyDTO);
-
         Long rno = replyService.register(replyDTO);
         return new ResponseEntity<>(rno, HttpStatus.OK);
     }
