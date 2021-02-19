@@ -59,7 +59,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean isPwdMatchesCheck(String password, Long mid) {
 
-        String encodePwd = memberRepo.getOne(mid).getPassword();
+        String encodePwd = memberRepo.findById(mid).get()
+                            .getPassword();
 
         return passwordEncoder.matches(password, encodePwd);
     }

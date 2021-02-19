@@ -24,11 +24,13 @@
 
         <div class="form-group">
             <label>email</label>
-             <span class="form-control" sec:authentication="principal.email"></span>
+            <span class="form-control" sec:authentication="principal.email"></span>
         </div>
 
         <div class="form-group">
-            <label>닉네임 <button type="button" class="badge badge-secondary modNickname">닉네임 수정</button></label>
+            <label>닉네임
+                <button type="button" class="badge badge-secondary modNickname">닉네임 수정</button>
+            </label>
             <span class="form-control" sec:authentication="principal.nickname"></span>
         </div>
 
@@ -56,27 +58,33 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
 
-<!--                        <form th:action=""-->
-                        <div class="form-group">
-                            <label>현재 닉네임</label>
-                            <span class="form-control" sec:authentication="principal.nickname"></span>
+                    <form th:action="@{/member/modifyNickname}" th:method="post">
+
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>현재 닉네임</label>
+                                <span class="form-control" sec:authentication="principal.nickname"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>변경할 닉네임 </label>
+                                <input class="form-control" type="text" name="nickname" placeholder="변경할 닉네임을 입력하세요">
+                                <button type="button" class="badge badge-info nicknameCheck">중복 체크</button>
+                                <span id="spanNickname"></span>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary nicknameSave"
+                                    id="modSubmit" disabled="disabled">닉네임 수정
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary replyClose" data-dismiss="modal">닫기
+                            </button>
                         </div>
 
-                        <div class="form-group">
-                            <label>변경할 닉네임  </label>
-                            <input class="form-control" type="text" name="nickname" placeholder="변경할 닉네임을 입력하세요">
-                            <button type="button" class="badge badge-info nicknameCheck">중복 체크</button>
-                            <span id="spanNickname"></span>
-                        </div>
+                    </form>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary nicknameSave"
-                                id="modSubmit" disabled="disabled">닉네임 수정</button>
-                        <button type="button" class="btn btn-outline-secondary replyClose" data-dismiss="modal">닫기</button>
-                    </div>
                 </div>
             </div>
         </div>

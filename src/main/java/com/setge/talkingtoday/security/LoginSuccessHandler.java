@@ -2,6 +2,9 @@ package com.setge.talkingtoday.security;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -11,9 +14,27 @@ import java.io.IOException;
 
 @Log4j2
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private PasswordEncoder passwordEncoder;
+
+    public LoginSuccessHandler(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws IOException, ServletException {
         log.info("onAuthenticationSuccess");
+
+        AuthMemberDTO authMemberDTO = (AuthMemberDTO) authentication.getPrincipal();
+        boolean fromSocial = authMemberDTO.isFromSocial();
+        boolean password = passwordEncoder.matches("1111", authMemberDTO.getPassword());
+
+        if (fromSocial && password) {
+            redirectStrategy.sendRedirect(request, response, "/member/modify");
+        }
+        response.sendRedirect("/");
 
     }
 }

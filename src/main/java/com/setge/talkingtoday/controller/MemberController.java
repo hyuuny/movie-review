@@ -63,11 +63,9 @@ public class MemberController {
     }
 
     @PostMapping("/modifyNickname")
-    public String modifyNicknamePost(@AuthenticationPrincipal AuthMemberDTO authMemberDTO,
-                                     String nickname) {
+    public String modifyNickname(String nickname, @AuthenticationPrincipal AuthMemberDTO authMemberDTO) {
         memberService.changeNickname(nickname, authMemberDTO.getMid());
-
-        return "redirect:/member/member-info";
+        return "redirect:/";
     }
 
     @GetMapping("/password-check")

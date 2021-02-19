@@ -41,11 +41,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/customlogin")
                 .loginProcessingUrl("/authenticate")
-//                .defaultSuccessUrl("/")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
                 .oauth2Login()
+                .successHandler(successHandler())
                 .and()
                 .rememberMe().tokenValiditySeconds(60 * 60 * 7).userDetailsService(memberUserDetailsService);
 
@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LoginSuccessHandler successHandler() {
-        return new LoginSuccessHandler();
+        return new LoginSuccessHandler(passwordEncoder());
     }
 
 }
