@@ -11,8 +11,11 @@ public interface MemberService {
 
     int duplicateNicknameCheck(String nickname);
 
-    void modify(String password, Long mid);
+    void changeNickname(String nickname, Long mid);
 
+    void changePassword(String newPwd, Long mid);
+
+    boolean isPwdMatchesCheck(String password, Long mid);
 
     /**
      *
@@ -29,7 +32,6 @@ public interface MemberService {
                 .build();
 
         return member;
-
     }
 
 }

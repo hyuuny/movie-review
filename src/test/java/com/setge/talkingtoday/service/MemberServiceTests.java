@@ -1,6 +1,7 @@
 package com.setge.talkingtoday.service;
 
 import com.setge.talkingtoday.dto.MemberDTO;
+import com.setge.talkingtoday.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,4 +53,12 @@ public class MemberServiceTests {
         assertThat(cnt).isEqualTo(1);
         assertThat(cnt2).isEqualTo(0);
     }
+
+    @Test
+    public void 닉네임_변경한다() {
+        //given
+
+
+    }
+
 }

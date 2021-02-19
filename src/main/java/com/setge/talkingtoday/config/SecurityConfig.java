@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/member/member-info", "/movie/read", "/movie/register", "/board/**",
-                        "/replies/**")
+                        "/replies/**", "/uploadAjax", "/display", "/removeFile")
                 .hasRole("USER")
                 .antMatchers("/member/admin")
                 .hasRole("ADMIN")

@@ -36,10 +36,25 @@ public class MemberController {
     public String signupPost(@Valid MemberDTO dto, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            log.info("register is not valid");
             return "/member/signup";
         }
+
+        memberService.register(dto);
         return "redirect:/";
+    }
+
+    @ResponseBody
+    @PostMapping("/duplicateEmailCheck")
+    public int duplicateEmailCheck(@RequestParam("email") String email) {
+        int cnt = memberService.duplicateEmailCheck(email);
+        return cnt;
+    }
+
+    @ResponseBody
+    @PostMapping("/duplicateNicknameCheck")
+    public int duplicateNicknameCheck(@RequestParam("nickname") String nickname) {
+        int cnt = memberService.duplicateNicknameCheck(nickname);
+        return cnt;
     }
 
     @GetMapping("/member-info")
@@ -47,5 +62,32 @@ public class MemberController {
         log.info("로그인 회원 : " + authMemberDTO);
     }
 
+    @PostMapping("/modifyNickname")
+    public String modifyNicknamePost(@AuthenticationPrincipal AuthMemberDTO authMemberDTO,
+                                     String nickname) {
+        memberService.changeNickname(nickname, authMemberDTO.getMid());
 
+        return "redirect:/member/member-info";
+    }
+
+    @GetMapping("/password-check")
+    public void passwordCheckForm() {}
+
+    @PostMapping("/password-check")
+    public String passwordCheckPost(@AuthenticationPrincipal AuthMemberDTO authMemberDTO,
+                                    String password) {
+        if (!(memberService.isPwdMatchesCheck(password, authMemberDTO.getMid()))) {
+            return "/member/password-check";
+        }
+        return "/member/modify";
+    }
+
+    @GetMapping("/modify")
+    public void modifyForm() {}
+
+    @PostMapping("/modify")
+    public String modifyPassword(String newPwd, @AuthenticationPrincipal AuthMemberDTO authMemberDTO) {
+        memberService.changePassword(newPwd, authMemberDTO.getMid());
+        return "redirect:/";
+    }
 }

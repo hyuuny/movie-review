@@ -47,11 +47,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void modify(String password, Long mid) {
-        Member member = memberRepo.findById(mid).get();
+    public void changeNickname(String nickname, Long mid) {
+        memberRepo.changeNickname(nickname, mid);
+    }
 
+    @Override
+    public void changePassword(String newPwd, Long mid) {
+        memberRepo.changePassword(passwordEncoder.encode(newPwd), mid);
+    }
 
+    @Override
+    public boolean isPwdMatchesCheck(String password, Long mid) {
 
+        String encodePwd = memberRepo.getOne(mid).getPassword();
+
+        return passwordEncoder.matches(password, encodePwd);
     }
 
 

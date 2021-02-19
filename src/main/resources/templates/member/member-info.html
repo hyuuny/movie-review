@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:sec="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
     <th:block th:fragment="content">
@@ -10,33 +15,123 @@
         <h4 sec:authorize="hasRole('USER')">SETGE 회원</h4>
         <h4 sec:authorize="hasRole('MANAGER')">SETGE 매니저</h4>
         <h4 sec:authorize="hasRole('ADMIN')">SETGE 관리자</h4>
-        <br />
-
+        <br/>
 
         <div class="form-group">
-            회원번호 : <span type="text" sec:authentication="principal.mid"></span>
+            <label>회원번호</label>
+            <span class="form-control" sec:authentication="principal.mid"></span>
         </div>
 
         <div class="form-group">
-            email : <span sec:authentication="principal.email"></span>
+            <label>email</label>
+             <span class="form-control" sec:authentication="principal.email"></span>
         </div>
 
         <div class="form-group">
-            닉네임 : <input type="text" sec:authentication="principal.nickname">
+            <label>닉네임 <button type="button" class="badge badge-secondary modNickname">닉네임 수정</button></label>
+            <span class="form-control" sec:authentication="principal.nickname"></span>
         </div>
 
         <div class="form-group">
-            소셜여부 : <span sec:authentication="principal.fromSocial"></span>
+            <label>소셜여부</label>
+            <span class="form-control" sec:authentication="principal.fromSocial"></span>
         </div>
 
         <div class="form-group">
-            등급 : <span sec:authentication="principal.authorities"></span>
+            <label>등급</label>
+            <span class="form-control" sec:authentication="principal.authorities"></span>
         </div>
 
-        <a th:href="@{/member/modify}" th:action="get" class="btn btn-success">비밀번호 변경</a>
+        <a th:href="@{/member/password-check}" th:action="get" class="btn btn-success">비밀번호 변경</a>
         <a th:href="@{/}" th:action="get" class="btn btn-info">홈</a>
 
-    </th:block>
-</th:block>
 
-</html>
+        <div class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">닉네임 수정</h5>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+<!--                        <form th:action=""-->
+                        <div class="form-group">
+                            <label>현재 닉네임</label>
+                            <span class="form-control" sec:authentication="principal.nickname"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>변경할 닉네임  </label>
+                            <input class="form-control" type="text" name="nickname" placeholder="변경할 닉네임을 입력하세요">
+                            <button type="button" class="badge badge-info nicknameCheck">중복 체크</button>
+                            <span id="spanNickname"></span>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary nicknameSave"
+                                id="modSubmit" disabled="disabled">닉네임 수정</button>
+                        <button type="button" class="btn btn-outline-secondary replyClose" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script th:inline="javascript">
+            $(document).ready(function () {
+
+                // 403 에러 해결
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
+                $(function () {
+                    $(document).ajaxSend(function (e, xhr, options) {
+                        xhr.setRequestHeader(header, token);
+                    });
+                });
+
+                let modal = $('.modal');
+
+                $(".modNickname").click(function () {
+                    modal.modal('show');
+
+                    $('input[name="nickname"]').val();
+                }) // end addReply
+
+
+                $('.nicknameCheck').click(function () {
+                    let nickname = $('input[name="nickname"]').val();
+                    let data = {nickname: nickname};
+
+                    if (nickname.length == 0) {
+                        swal("입력 확인", "닉네임은 공백일 수 없습니다.", "warning");
+                        return
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        data: data,
+                        url: "/member/duplicateNicknameCheck",
+                        success: function (result) {
+                            if (result > 0) {
+                                document.getElementById("spanNickname").innerHTML = "닉네임이 다른회원과 중복됩니다.";
+                                $("#modSubmit").attr("disabled", "disabled");
+                            } else {
+                                document.getElementById("spanNickname").innerHTML = "사용가능한 닉네임입니다.";
+                                $("#modSubmit").removeAttr("disabled");
+                            }
+                        }
+                    });
+                }); // end registerReply
+
+            }) // end document
+        </script>
+
+    </th:block>
+
+</th:block>
