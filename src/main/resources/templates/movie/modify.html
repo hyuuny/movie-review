@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
     <th:block th:fragment="content">
@@ -21,6 +26,8 @@
 
             <!--            리뷰 삭제시 필요한 mno 히든 값-->
             <input type="hidden" class="form-control" name="mno" th:value="${dto.mno}">
+            <input type="hidden" class="form-control" name="mid" th:value="${dto.mid}">
+
 
             <div class="form-group fileForm">
                 <label>이미지 파일</label>
@@ -83,6 +90,16 @@
 <script th:inline="javascript">
 
     $(document).ready(function (e) {
+
+        // 403 에러 해결
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        $(function () {
+            $(document).ajaxSend(function (e, xhr, options) {
+                xhr.setRequestHeader(header, token);
+            });
+        });
+
 
         let regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
         let maxSize = 10485760; //10MB

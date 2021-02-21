@@ -8,7 +8,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString
+@ToString(exclude = "member")
 @Entity
 public class Movie extends BaseEntity{
 
@@ -18,8 +18,7 @@ public class Movie extends BaseEntity{
 
     private String title;
 
-    public void changeTitle(String title) {
-        this.title = title;
-    }
+    @ManyToOne(fetch = FetchType.LAZY) // member 테이블이 필요한 경우에 가져온다.
+    private Member member;
 
 }

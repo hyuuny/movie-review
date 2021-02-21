@@ -65,15 +65,8 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     @Override
     public void modify(BoardDTO dto) {
-        Board board = boardRepo.getOne(dto.getBno());
-
-        board.changeTitle(dto.getTitle());
-        board.changeContent(dto.getContent());
-
-        // JPA는 자동감지 기능이 있어서 save를 하지 않아도 되자만, save해주자.
+        Board board = dtoToEntity(dto);
         boardRepo.save(board);
     }
-
-
 
 }

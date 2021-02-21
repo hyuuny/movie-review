@@ -16,6 +16,7 @@ import java.util.List;
 public class MovieDTO {
 
     private Long mno;
+    private Long mid;
     private String title;
 
     @Builder.Default

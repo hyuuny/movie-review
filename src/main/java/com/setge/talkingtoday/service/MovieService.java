@@ -4,6 +4,7 @@ import com.setge.talkingtoday.dto.MovieDTO;
 import com.setge.talkingtoday.dto.MovieImageDTO;
 import com.setge.talkingtoday.dto.PageRequestDTO;
 import com.setge.talkingtoday.dto.PageResultDTO;
+import com.setge.talkingtoday.entity.Member;
 import com.setge.talkingtoday.entity.Movie;
 import com.setge.talkingtoday.entity.MovieImage;
 
@@ -38,6 +39,7 @@ public interface MovieService {
 
         MovieDTO movieDTO = MovieDTO.builder()
                 .mno(movie.getMno())
+                .mid(movie.getMember().getMid())
                 .title(movie.getTitle())
                 .regDate(movie.getRegDate())
                 .modDate(movie.getModDate())
@@ -66,9 +68,11 @@ public interface MovieService {
     default Map<String, Object> dtoToEntity(MovieDTO movieDTO) {
         // MovieDto -> Movie
         Map<String, Object> entityMap = new HashMap<>();
+        Member member = Member.builder().mid(movieDTO.getMid()).build();
 
         Movie movie = Movie.builder()
                 .mno(movieDTO.getMno())
+                .member(member)
                 .title(movieDTO.getTitle())
                 .build();
 

@@ -3,9 +3,11 @@ package com.setge.talkingtoday.controller;
 import com.setge.talkingtoday.dto.MovieDTO;
 import com.setge.talkingtoday.dto.PageRequestDTO;
 import com.setge.talkingtoday.entity.Movie;
+import com.setge.talkingtoday.security.AuthMemberDTO;
 import com.setge.talkingtoday.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +27,9 @@ public class MovieController {
     }
 
     @GetMapping("/register")
-    public void movieRegisterForm() {
+    public void movieRegisterForm(@AuthenticationPrincipal AuthMemberDTO authMemberDTO,
+                                  Model model) {
+        model.addAttribute("memberMid", authMemberDTO.getMid());
     }
 
     @PostMapping("/register")
@@ -37,9 +41,11 @@ public class MovieController {
     }
 
     @GetMapping({"/read", "/modify"})
-    public void read(long mno, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Model model) {
+    public void read(long mno, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO,
+                     @AuthenticationPrincipal AuthMemberDTO authMemberDTO, Model model) {
         MovieDTO movieDTO = movieService.getMovie(mno);
         model.addAttribute("dto", movieDTO);
+        model.addAttribute("memberDTO", authMemberDTO);
     }
 
     @PostMapping("/modify")

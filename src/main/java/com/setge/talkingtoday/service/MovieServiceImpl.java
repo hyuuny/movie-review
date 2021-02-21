@@ -88,12 +88,10 @@ public class MovieServiceImpl implements MovieService {
     @Transactional
     @Override
     public void modify(MovieDTO movieDTO) {
-
         Map<String, Object> entityMap = dtoToEntity(movieDTO); // dto객체를 entity로 변환하여 map에 저장
         Movie movie = (Movie) entityMap.get("movie"); // entityMap({"movie","V"} -> movie
         List<MovieImage> movieImageList = (List<MovieImage>) entityMap.get("imgList"); // entityMap({"imgList","V"} -> imageList
 
-        movie.changeTitle(movieDTO.getTitle()); // 제목 변경
         movieImageRepo.deleteByMno(movie.getMno()); // 기존 썸네일 삭제하고
         movieRepo.save(movie);
         movieImageList.forEach(movieImageRepo::save); // 새로운 이미지를 저장해주자

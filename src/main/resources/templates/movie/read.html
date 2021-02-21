@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
     <th:block th:fragment="content">
@@ -60,22 +64,25 @@
             </ul>
         </div>
 
-        <a th:href="@{/movie/modify(mno = ${dto.mno}, page=${requestDTO.page}, type=${requestDTO.type}, keyword =${requestDTO.keyword})}">
-            <button type="button" class="btn btn-primary">수정</button>
-        </a>
+        <div>
+            <a th:if="${dto.getMid} == ${memberDTO.getMid}"
+               th:href="@{/movie/modify(mno = ${dto.mno}, page=${requestDTO.page}, type=${requestDTO.type}, keyword =${requestDTO.keyword})}">
+                <button type="button" class="btn btn-primary">수정</button>
+            </a>
 
-        <a th:href="@{/movie/list(page=${requestDTO.page} , type=${requestDTO.type}, keyword =${requestDTO.keyword})}">
-            <button type="button" class="btn btn-info">목록</button>
-        </a>
+            <a th:href="@{/movie/list(page=${requestDTO.page} , type=${requestDTO.type}, keyword =${requestDTO.keyword})}">
+                <button type="button" class="btn btn-info">목록</button>
+            </a>
+        </div>
 
         <div class="mt-4">
-        <button type="button" class="btn btn-primary">
-            리뷰 수 <span class="badge badge-light">[[${dto.reviewCnt}]]</span>
-        </button>
+            <button type="button" class="btn btn-primary">
+                리뷰 수 <span class="badge badge-light">[[${dto.reviewCnt}]]</span>
+            </button>
 
-        <button type="button" class="btn btn-info addReviewBtn">
-            리뷰 등록
-        </button>
+            <button type="button" class="btn btn-info addReviewBtn">
+                리뷰 등록
+            </button>
         </div>
 
         <div class="list-group reviewList">
@@ -93,10 +100,9 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>회원번호</label>
-                            <input type="text" class="form-control" name="mid">
-                        </div>
+
+                        <input type="hidden" class="form-control" name="mid" th:value="${memberDTO.getMid}">
+
                         <div class="form-group">
                             <label>평점 <span class="grade"></span></label>
                             <div class='starrr'></div>
@@ -144,6 +150,15 @@
         <script>
             $(document).ready(function (e) {
 
+                // 403 에러 해결
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
+                $(function () {
+                    $(document).ajaxSend(function (e, xhr, options) {
+                        xhr.setRequestHeader(header, token);
+                    });
+                });
+
                 let grade = 0;
                 let mno = [[${dto.mno}]];
 
@@ -163,7 +178,7 @@
 
 
                 $(".addReviewBtn").click(function () {
-                    inputMid.val("");
+                    inputMid.val();
                     inputText.val("");
 
                     $(".removeBtn ,  .modifyBtn").hide();
@@ -212,9 +227,10 @@
                         $.each(arr, function (idx, review) {
 
                             str += '    <div class="card-body" data-reviewnum=' + review.reviewnum + ' data-mid=' + review.mid + '>';
-                            str += '    <h5 class="card-title">' + review.text + ' <span>' + review.grade + '</span></h5>';
+                            str += '    <small> 평점 : ' + review.grade + '</small>';
+                            str += '    <h5 class="card-title">' + review.text + '</h5><br/>';
                             str += '    <h6 class="card-subtitle mb-2 text-muted">' + review.nickname + '</h6>';
-                            str += '    <p class="card-text">' + formatTime(review.regDate) + '</p>';
+                            str += '    <p class="card-text">' + formatTime(review.modDate) + '</p>';
                             str += '    </div>';
                         });
                         $(".reviewList").html(str);
@@ -226,6 +242,7 @@
 
                 let reviewnum;
 
+                // 리뷰 선택
                 $(".reviewList").on("click", ".card-body", function () {
 
                     $(".reviewSaveBtn").hide();
@@ -233,16 +250,24 @@
 
 
                     let targetReview = $(this);
+                    let inputMid = $("input[name='mid']").val($(this).find('.card-title').html());
+
 
                     reviewnum = targetReview.data("reviewnum");
                     console.log("reviewnum: " + reviewnum);
-                    inputMid.val(targetReview.data("mid"));
+                    console.log("mid " + inputMid.val(targetReview.data("mid")).val())
+                    console.log("memberDTO " + [[${memberDTO.getMid}]])
+
                     inputText.val(targetReview.find('.card-title').clone().children().remove().end().text());
 
                     let grade = targetReview.find('.card-title span').html();
-                    $(".starrr a:nth-child(" + grade + ")").trigger('click');
+                    $(".starrr a:nth(" + grade + ")").trigger('click');
 
-                    $('.reviewModal').modal('show');
+                    // 로그인한 사용자가 등록한 리뷰면 수정가능하게 해줘
+                    if (inputMid.val() == [[${memberDTO.getMid}]]) {
+                        $('.reviewModal').modal('show');
+                    }
+
                 });
 
                 // 리뷰 수정
@@ -256,7 +281,7 @@
                         mid: inputMid.val()
                     };
 
-                    console.log("modify : " + data);
+                    console.log("modify : " + data)
 
                     $.ajax({
                         url: '/reviews/' + mno + "/" + reviewnum,
@@ -277,7 +302,7 @@
 
                     let data = {reviewnum: reviewnum};
 
-                    console.log("remove : "+ data);
+                    console.log("remove : " + data);
 
                     $.ajax({
                         url: '/reviews/' + mno + "/" + reviewnum,

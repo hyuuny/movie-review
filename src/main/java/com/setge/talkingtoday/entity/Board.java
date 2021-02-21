@@ -27,12 +27,4 @@ public class Board extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY) // member 테이블이 필요한 경우에 가져온다.
     private Member member;
 
-
-    public void changeTitle(String title) {
-        this.title = title;
-    }
-
-    public void changeContent(String content) {
-        this.content = content;
-    }
 }
