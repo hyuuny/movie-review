@@ -6,10 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 
-public interface MovieRepository extends JpaRepository<Movie, Long>, SearchBoardRepository {
+public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     @Query("select m, mi, avg(coalesce(r.grade,0)),  count(r) from Movie m " +
             "left outer join MovieImage mi on mi.movie = m " +
