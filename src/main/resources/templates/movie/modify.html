@@ -24,6 +24,11 @@
                 <input type="text" class="form-control" name="title" th:value="${dto.title}">
             </div>
 
+            <div class="form-group">
+                <label>작성자</label>
+                <input type="text" class="form-control" name="nickname" th:value="${dto.nickname}" readonly>
+            </div>
+
             <!--            리뷰 삭제시 필요한 mno 히든 값-->
             <input type="hidden" class="form-control" name="mno" th:value="${dto.mno}">
             <input type="hidden" class="form-control" name="mid" th:value="${dto.mid}">

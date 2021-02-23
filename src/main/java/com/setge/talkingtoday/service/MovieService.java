@@ -40,6 +40,7 @@ public interface MovieService {
         MovieDTO movieDTO = MovieDTO.builder()
                 .mno(movie.getMno())
                 .mid(movie.getMember().getMid())
+                .nickname(movie.getNickname())
                 .title(movie.getTitle())
                 .regDate(movie.getRegDate())
                 .modDate(movie.getModDate())
@@ -68,10 +69,14 @@ public interface MovieService {
     default Map<String, Object> dtoToEntity(MovieDTO movieDTO) {
         // MovieDto -> Movie
         Map<String, Object> entityMap = new HashMap<>();
-        Member member = Member.builder().mid(movieDTO.getMid()).build();
+        Member member = Member.builder()
+                .mid(movieDTO.getMid())
+                .nickname(movieDTO.getNickname())
+                .build();
 
         Movie movie = Movie.builder()
                 .mno(movieDTO.getMno())
+                .nickname(member.getNickname())
                 .member(member)
                 .title(movieDTO.getTitle())
                 .build();

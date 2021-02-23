@@ -16,6 +16,7 @@ public class Movie extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mno;
 
+    private String nickname;
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY) // member 테이블이 필요한 경우에 가져온다.

@@ -30,12 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/member/member-info", "/movie/read", "/movie/register", "/board/**",
-                        "/replies/**", "/uploadAjax", "/display", "/removeFile")
+                .antMatchers("/member/member-info", "/movie/read", "/movie/register", "/movie/modify", "/movie/remove",
+                        "/board/read", "/board/register", "/board/modify", "/board/remove", "/replies/**", "/chatting")
                 .hasRole("USER")
                 .antMatchers("/member/admin")
                 .hasRole("ADMIN")
-                .antMatchers( "/", "/**")
+                .antMatchers( "/", "/**", "/*.css", "/images/**", "/display", "/uploadAjax", "/removeFile")
                 .permitAll();
 
         http.formLogin()

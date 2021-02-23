@@ -1,16 +1,12 @@
 package com.setge.talkingtoday.repository;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.setge.talkingtoday.entity.Movie;
 import com.setge.talkingtoday.entity.MovieImage;
-import com.setge.talkingtoday.entity.QMovie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,24 +67,24 @@ public class MovieRepositoryTests {
         }
     }
 
-    @Test
-    public void 영화_검색한다() {
-
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("mno").descending());
-
-        QMovie qMovie = QMovie.movie;
-
-        String keyword = "마녀";
-
-        BooleanBuilder builder = new BooleanBuilder();
-        BooleanExpression expression = qMovie.title.contains(keyword);
-        builder.and(expression);
-
-        Page<Movie> result = movieRepository.findAll(builder, pageable);
-
-        result.stream().forEach(movie -> {
-            System.out.println(movie);
-        });
-
-    }
+//    @Test
+//    public void 영화_검색한다() {
+//
+//        Pageable pageable = PageRequest.of(0, 10, Sort.by("mno").descending());
+//
+//        QMovie qMovie = QMovie.movie;
+//
+//        String keyword = "마녀";
+//
+//        BooleanBuilder builder = new BooleanBuilder();
+//        BooleanExpression expression = qMovie.title.contains(keyword);
+//        builder.and(expression);
+//
+//        Page<Movie> result = movieRepository.findAll(builder, pageable);
+//
+//        result.stream().forEach(movie -> {
+//            System.out.println(movie);
+//        });
+//
+//    }
 }

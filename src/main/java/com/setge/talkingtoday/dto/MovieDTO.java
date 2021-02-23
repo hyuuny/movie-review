@@ -17,6 +17,7 @@ public class MovieDTO {
 
     private Long mno;
     private Long mid;
+    private String nickname;
     private String title;
 
     @Builder.Default

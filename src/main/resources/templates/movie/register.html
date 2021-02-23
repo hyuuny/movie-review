@@ -17,6 +17,11 @@
                 <input type="text" class="form-control" name="title" placeholder="제목을 입력해주세요">
             </div>
 
+            <div class="form-group">
+                <label>작성자</label>
+                <input type="text" class="form-control" name="nickname" th:value="${member.getNickname}" readonly>
+            </div>
+
             <div class="form-group fileForm">
                 <label>이미지 파일</label>
                 <div class="custom-file">
@@ -62,7 +67,7 @@
                 </ul>
             </div>
 
-            <input type="hidden" name="mid" th:value="${memberMid}">
+            <input type="hidden" name="mid" th:value="${member.getMid}">
 
             <button type="submit" class="btn btn-primary">업로드</button>
             <button type="button" class="btn btn-success listBtn">취소</button>

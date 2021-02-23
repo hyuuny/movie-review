@@ -38,6 +38,7 @@
             <tr>
                 <th scope="col">번호</th>
                 <th scope="col">제목&이미지</th>
+                <th scope="col">작성자</th>
                 <th scope="col">리뷰 수</th>
                 <th scope="col">평균 평점</th>
                 <th scope="col">등록일</th>
@@ -52,6 +53,7 @@
                         <img th:if="${dto.imageDTOList.size() > 0 && dto.imageDTOList[0].path != null }"
                              th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|">
                         [[${dto.title}]]</a></td>
+                <td><b>[[${dto.nickname}]]</b></td>
                 <td><b>[[${dto.reviewCnt}]]</b></td>
                 <td><b>[[${dto.avg}]]</b></td>
                 <td>[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</td>
@@ -99,8 +101,7 @@
                         <p>요청을 정상적으로 처리하였습니다.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
                     </div>
                 </div>
             </div>

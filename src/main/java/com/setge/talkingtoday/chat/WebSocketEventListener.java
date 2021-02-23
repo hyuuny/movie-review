@@ -29,7 +29,7 @@ public class WebSocketEventListener {
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
         if(username != null) {
-            logger.info("연결이 끊긴 사용자 : " + username);
+            logger.info("사용자 연결이 끊긴 : " + username);
 
             ChatMessage chatMessage = new ChatMessage();
             chatMessage.setType(MessageType.LEAVE);

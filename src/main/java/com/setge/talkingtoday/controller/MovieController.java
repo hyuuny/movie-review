@@ -29,7 +29,7 @@ public class MovieController {
     @GetMapping("/register")
     public void movieRegisterForm(@AuthenticationPrincipal AuthMemberDTO authMemberDTO,
                                   Model model) {
-        model.addAttribute("memberMid", authMemberDTO.getMid());
+        model.addAttribute("member", authMemberDTO);
     }
 
     @PostMapping("/register")
@@ -51,7 +51,7 @@ public class MovieController {
     @PostMapping("/modify")
     public String modifyMovie(MovieDTO movieDTO, @ModelAttribute("requestDTO") PageRequestDTO requestDTO,
                               RedirectAttributes redirectAttributes) {
-        log.info(movieDTO + " 리뷰 수정");
+        log.info(movieDTO + " 게시글 수정");
         movieService.modify(movieDTO);
         redirectAttributes.addAttribute("page", requestDTO.getPage());
         redirectAttributes.addAttribute("type", requestDTO.getType());

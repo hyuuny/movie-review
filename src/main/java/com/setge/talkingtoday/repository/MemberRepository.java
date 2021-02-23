@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.util.Optional;
 
@@ -25,10 +26,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Modifying
     @Query("update Member set nickname =:nickname where mid = :mid")
-    public void changeNickname(String nickname, Long mid);
+    void changeNickname(String nickname, Long mid);
 
     @Modifying
     @Query("update Member set password = :password where mid = :mid")
-    public void changePassword(String password, Long mid);
+    void changePassword(String password, Long mid);
 
 }
