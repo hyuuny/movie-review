@@ -25,6 +25,7 @@ public class MovieDTO {
 
     private double avg;             // 영화 평균평점
     private int reviewCnt;          // 리뷰 수
+    private Long likeCnt;           // 좋아요 수
     private LocalDateTime regDate;  // 등록일
     private LocalDateTime modDate;  // 수정일
 

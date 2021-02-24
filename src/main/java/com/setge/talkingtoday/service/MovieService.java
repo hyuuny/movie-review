@@ -35,7 +35,7 @@ public interface MovieService {
      * @return MovieDTO(Movie, MovieImage, 평균평점, 리뷰 수)
      */
     // 리스트에 뿌리기 위한 entitiesToDto
-    default MovieDTO entitiesToDto(Movie movie, List<MovieImage> movieImages, Double avg, Long reviewCnt) {
+    default MovieDTO entitiesToDto(Movie movie, List<MovieImage> movieImages, Double avg, Long reviewCnt, Long likeCnt) {
 
         MovieDTO movieDTO = MovieDTO.builder()
                 .mno(movie.getMno())
@@ -54,9 +54,10 @@ public interface MovieService {
                     .build();
         }).collect(Collectors.toList());
 
-        movieDTO.setImageDTOList(movieImageDTOList);
-        movieDTO.setAvg(avg);
-        movieDTO.setReviewCnt(reviewCnt.intValue());
+        movieDTO.setImageDTOList(movieImageDTOList);    // 이미지 리스트
+        movieDTO.setAvg(avg);                           // 평균 평점
+        movieDTO.setReviewCnt(reviewCnt.intValue());    // 리뷰 수
+        movieDTO.setLikeCnt(likeCnt);                   // 좋아요 수
 
         return movieDTO;
     }

@@ -39,8 +39,9 @@
                 <th scope="col">번호</th>
                 <th scope="col">제목&이미지</th>
                 <th scope="col">작성자</th>
-                <th scope="col">리뷰 수</th>
                 <th scope="col">평균 평점</th>
+                <th scope="col">리뷰 수</th>
+                <th scope="col">좋아요 수</th>
                 <th scope="col">등록일</th>
             </tr>
             </thead>
@@ -54,8 +55,9 @@
                              th:src="|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|">
                         [[${dto.title}]]</a></td>
                 <td><b>[[${dto.nickname}]]</b></td>
-                <td><b>[[${dto.reviewCnt}]]</b></td>
                 <td><b>[[${dto.avg}]]</b></td>
+                <td><b>[[${dto.reviewCnt}]]</b></td>
+                <td><b>[[${dto.likeCnt}]]</b></td>
                 <td>[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</td>
             </tr>
 

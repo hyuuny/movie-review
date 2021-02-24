@@ -32,6 +32,13 @@
             <input type="text" class="form-control" name="title" th:value="${dto.avg}" readonly>
         </div>
 
+        <div class="form-group">
+            <label>좋아요 수
+                <button type="button" class="badge badge-info clickLike">좋아요</button>
+            </label>
+            <input type="text" class="form-control likeCount" name="title" th:value="${dto.likeCnt}" readonly>
+        </div>
+
         <style>
             .uploadResult {
                 width: 100%;
@@ -151,7 +158,7 @@
         <script th:src="@{/starrr.js}"></script>
         <link th:href="@{/css/starrr.css}" rel="stylesheet">
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
-
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
             $(document).ready(function (e) {
 
@@ -332,7 +339,56 @@
                 });
 
 
-            });
+                function getLikeCount() {
+
+                    let likeCnt = $(".likeCount").val();
+                    alert(likeCnt);
+
+                    let data = {mno: mno};
+
+                    $.ajax({
+                        url: '/likes/' + mno + "/likeCnt",
+                        method: 'get',
+                        data: data,
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log("좋아요 수 ; " + data);
+                        }
+                    });
+
+                }
+
+                getLikeCount();
+
+
+                $('.clickLike').click(function () {
+
+                    let mid = [[${memberDTO.getMid}]];
+                    let mno = [[${dto.mno}]];
+
+                    let like = {
+                        mid: mid,
+                        mno: mno
+                    }
+
+                    $.ajax({
+                        url: '/likes/',
+                        method: 'post',
+                        data: JSON.stringify(like),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log("좋아요 ; " + data);
+
+                            let likeMno = parseInt(data);
+
+                            swal("댓글 등록", likeMno + "번 댓글이 등록되었습니다", "success");
+                        }
+                    })
+                }); // end lickClick
+
+            }); // emd document
         </script>
 
     </th:block>
