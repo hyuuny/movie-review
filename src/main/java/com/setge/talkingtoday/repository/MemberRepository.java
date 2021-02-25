@@ -32,4 +32,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("update Member set password = :password where mid = :mid")
     void changePassword(String password, Long mid);
 
+    @Modifying
+    @Query("update Movie set nickname = :nickname where nickname = :oldNickname")
+    void modifyMovieWriterByNickname(@Param("nickname") String nickname, @Param("oldNickname") String oldNickname);
+
+    @Modifying
+    @Query("update Reply set replyer = :replyer where replyer = :oldNickname")
+    void modifyReplyer(@Param("replyer") String replyer, @Param("oldNickname") String oldNickname);
+
 }

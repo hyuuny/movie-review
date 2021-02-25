@@ -57,8 +57,7 @@ public class MovieServiceImpl implements MovieService {
                 (Movie)arr[0],
                 (List<MovieImage>)(Arrays.asList((MovieImage)arr[1])),
                 (Double) arr[2],
-                (Long)arr[3],
-                (Long)arr[4]
+                (Long)arr[3]
         ));
 
         return new PageResultDTO<>(result, fn);
@@ -77,9 +76,8 @@ public class MovieServiceImpl implements MovieService {
 
         Double avg = (Double) result.get(0)[2];
         Long reviewCnt = (Long) result.get(0)[3];
-        Long likeCnt = (Long) result.get(0)[4];
 
-        return entitiesToDto(movie, movieImageList, avg, reviewCnt, likeCnt);
+        return entitiesToDto(movie, movieImageList, avg, reviewCnt);
     }
 
     @Transactional

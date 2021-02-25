@@ -46,9 +46,15 @@ public class MemberServiceImpl implements MemberService {
         return result.isPresent() ? 1 : 0;
     }
 
+    @Transactional
     @Override
     public void changeNickname(String nickname, Long mid) {
+        Member member = memberRepo.findById(mid).get();
+        String oldNickname = member.getNickname();
+
         memberRepo.changeNickname(nickname, mid);
+        memberRepo.modifyMovieWriterByNickname(nickname, oldNickname); // 리뷰게시판 작성자 수정
+        memberRepo.modifyReplyer(nickname, oldNickname); // 자유게시판, 리뷰게시판 댓글 닉네임 변곁
     }
 
     @Override
