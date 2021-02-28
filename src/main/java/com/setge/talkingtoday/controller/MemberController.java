@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -33,13 +34,20 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public String signupPost(@Valid MemberDTO dto, BindingResult bindingResult) {
+    public String signupPost(@Valid MemberDTO dto, BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) { // 입력 체크
             return "/member/signup";
         }
 
-        memberService.register(dto);
+        // 회원가입 할 때, 서버에서 한번 더 중복체크
+        try {
+            memberService.join(dto);
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("msg", e.getMessage());
+            return "redirect:/member/signup";
+        }
         return "redirect:/";
     }
 
@@ -69,7 +77,8 @@ public class MemberController {
     }
 
     @GetMapping("/password-check")
-    public void passwordCheckForm() {}
+    public void passwordCheckForm() {
+    }
 
     @PostMapping("/password-check")
     public String passwordCheckPost(@AuthenticationPrincipal AuthMemberDTO authMemberDTO,
@@ -81,7 +90,8 @@ public class MemberController {
     }
 
     @GetMapping("/modify")
-    public void modifyForm() {}
+    public void modifyForm() {
+    }
 
     @PostMapping("/modify")
     public String modifyPassword(String newPwd, @AuthenticationPrincipal AuthMemberDTO authMemberDTO) {

@@ -5,7 +5,7 @@ import com.setge.talkingtoday.entity.Member;
 
 public interface MemberService {
 
-    Long register(MemberDTO dto);
+    Long join(MemberDTO dto);
 
     int duplicateEmailCheck(String email);
 

@@ -1,12 +1,13 @@
 package com.setge.talkingtoday.service;
 
 import com.setge.talkingtoday.dto.MemberDTO;
-import com.setge.talkingtoday.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 public class MemberServiceTests {
@@ -17,6 +18,7 @@ public class MemberServiceTests {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     @Test
     public void 회원가입_테스트한다() {
         MemberDTO dto = MemberDTO.builder()
@@ -24,7 +26,33 @@ public class MemberServiceTests {
                 .password(passwordEncoder.encode("1111"))
                 .nickname("테스트")
                 .build();
-        service.register(dto);
+        service.join(dto);
+    }
+
+    @Test
+    public void 중복_회원_예외() {
+        // given
+        MemberDTO dto1 = MemberDTO.builder()
+                .email("user1@aaa.com")
+                .password(passwordEncoder.encode("1234"))
+                .nickname("유저")
+                .build();
+
+        // when
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> service.join(dto1));
+
+        assertThat(e.getMessage()).isEqualTo("이미 존재하는 이메일입니다.");
+
+//        try {
+//            service.join(dto1);
+//            fail();
+//        } catch (IllegalStateException e) {
+//            assertThat(e.getMessage()).isEqualTo("이미 존재하는 이메일입니다.");
+//        }
+
+        // then
+
+
     }
 
     @Test
@@ -54,11 +82,5 @@ public class MemberServiceTests {
         assertThat(cnt2).isEqualTo(0);
     }
 
-    @Test
-    public void 닉네임_변경한다() {
-        //given
-
-
-    }
 
 }
