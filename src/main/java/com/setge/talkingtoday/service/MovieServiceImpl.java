@@ -1,13 +1,10 @@
 package com.setge.talkingtoday.service;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.setge.talkingtoday.dto.MovieDTO;
 import com.setge.talkingtoday.dto.PageRequestDTO;
 import com.setge.talkingtoday.dto.PageResultDTO;
 import com.setge.talkingtoday.entity.Movie;
 import com.setge.talkingtoday.entity.MovieImage;
-import com.setge.talkingtoday.entity.QMovie;
 import com.setge.talkingtoday.repository.MovieImageRepository;
 import com.setge.talkingtoday.repository.MovieRepository;
 import com.setge.talkingtoday.repository.ReviewRepository;
@@ -82,7 +79,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Transactional
     @Override
-    public void removeWithImageAndReplies(Long mno) {
+    public void removeWithImageAndReviews(Long mno) {
         reviewRepo.deleteByMno(mno); // 리뷰 삭제하고
         movieImageRepo.deleteByMno(mno); // 첨부 이미지 삭제하고
         movieRepo.deleteById(mno); // 게시물 삭제
@@ -97,7 +94,20 @@ public class MovieServiceImpl implements MovieService {
 
         movieImageRepo.deleteByMno(movie.getMno()); // 기존 썸네일 삭제하고
         movieRepo.save(movie);
-        movieImageList.forEach(movieImageRepo::save); // 새로운 이미지를 저장해주자
+
+        try {
+            movieImageList.forEach(movieImageRepo::save); // 새로운 이미지를 저장해주자
+        } catch (NullPointerException npe) {
+            throw new NullPointerException("파일을 첨부해주세요");
+        }
+    }
+
+    /**
+     * 게시글에 저장되어 있는 이미지파일 리스트 반환
+     */
+    @Override
+    public List<MovieImage> getMovieImageList(Long mno) {
+        return movieRepo.getMovieImageListByMno(mno);
     }
 
 }

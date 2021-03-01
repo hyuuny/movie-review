@@ -77,6 +77,12 @@
             <div class="uploadResult">
                 <ul>
 
+<!--                    <li th:each="movieImage: ${dto.imageDTOList}" th:data-file="${movieImage.getThumbnailURL()}">-->
+<!--                        <button type='button' data-file='${movieImage.path}' class='btn-warning btn-sm'>X</button><br>-->
+<!--                        <img th:if="${movieImage.path != null}"-->
+<!--                             th:src="|/display?fileName=${movieImage.getThumbnailURL()}|">-->
+<!--                    </li>-->
+
                 </ul>
             </div>
 
@@ -104,6 +110,7 @@
                 xhr.setRequestHeader(header, token);
             });
         });
+
 
 
         let regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
@@ -161,7 +168,8 @@
                 dataType: 'json',
                 success: function (result) {
                     console.log(result);
-                    showResult(result);
+                    showResult(result); // 선택한 파일 출력
+
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(textStatus);
@@ -193,6 +201,9 @@
 
             let targetFile = $(this).data("file");
             let targetLi = $(this).closest("li");
+            console.log(targetFile);
+            console.log(targetLi);
+
 
             $.ajax({
                 url: '/removeFile', // imageFileUploadController

@@ -21,9 +21,11 @@ public interface MovieService {
 
     MovieDTO getMovie(Long mno);
 
-    void removeWithImageAndReplies(Long mno);
+    void removeWithImageAndReviews(Long mno);
 
     void modify(MovieDTO movieDTO);
+
+    List<MovieImage> getMovieImageList(Long mno);
 
 
     /**
@@ -87,7 +89,6 @@ public interface MovieService {
         List<MovieImageDTO> imageDTOList = movieDTO.getImageDTOList();
         if (imageDTOList != null && imageDTOList.size() > 0) {
             List<MovieImage> movieImageList = imageDTOList.stream().map(movieImageDTO -> {
-                System.out.println("movieImageDTO : " + movieImageDTO);
                 MovieImage movieImage = MovieImage.builder()
                         .path(movieImageDTO.getPath())
                         .imgName(movieImageDTO.getImgName())
@@ -99,6 +100,23 @@ public interface MovieService {
             entityMap.put("imgList", movieImageList);
         }
         return entityMap;
+    }
+
+    /**
+     * MovieImage -> MovieImageDTO로 변환
+     * 게시글 삭제하면서 경로에 저장되어있는 파일도 삭제하기 위함
+     */
+    default List<MovieImageDTO> movieImageListToMovieImageDTOList(List<MovieImage> movieImages) {
+
+        List<MovieImageDTO> movieImageDTOList = movieImages.stream().map(movieImage -> {
+            return MovieImageDTO.builder()
+           .imgName(movieImage.getImgName())
+           .path(movieImage.getPath())
+           .uuid(movieImage.getUuid())
+           .build();
+        }).collect(Collectors.toList());
+
+        return movieImageDTOList;
     }
 
 }

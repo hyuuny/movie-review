@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
@@ -87,4 +88,13 @@ public class MovieRepositoryTests {
 //        });
 //
 //    }
+
+    @Test
+    public void 무비_이미지_조회() {
+        List<MovieImage> mi = movieRepository.getMovieImageByMovie(7L);
+
+        mi.forEach(movieImage -> {
+            System.out.println(movieImage);
+        });
+    }
 }

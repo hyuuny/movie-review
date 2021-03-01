@@ -9,7 +9,7 @@
 
     <th:block th:fragment="content">
 
-        <h1 class="mt-4">리뷰 등록</h1>
+        <h1 class="mt-4">영화 등록</h1>
 
         <form th:action="@{/movie/register}" th:method="post">
             <div class="form-group">
@@ -69,7 +69,7 @@
 
             <input type="hidden" name="mid" th:value="${member.getMid}">
 
-            <button type="submit" class="btn btn-primary">업로드</button>
+            <button type="submit" class="btn btn-primary">게시글 등록</button>
             <button type="button" class="btn btn-success listBtn">취소</button>
         </form>
 

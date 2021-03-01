@@ -19,29 +19,29 @@
 
         <div class="form-group">
             <label>회원번호</label>
-            <span class="form-control" sec:authentication="principal.mid"></span>
+            <span class="form-control col-3" sec:authentication="principal.mid"></span>
         </div>
 
         <div class="form-group">
             <label>email</label>
-            <span class="form-control" sec:authentication="principal.email"></span>
+            <span class="form-control col-3" sec:authentication="principal.email"></span>
         </div>
 
         <div class="form-group">
             <label>닉네임
                 <button type="button" class="badge badge-secondary modNickname">닉네임 수정</button>
             </label>
-            <span class="form-control" sec:authentication="principal.nickname"></span>
+            <span class="form-control col-3" sec:authentication="principal.nickname"></span>
         </div>
 
         <div class="form-group">
             <label>소셜여부</label>
-            <span class="form-control" sec:authentication="principal.fromSocial"></span>
+            <span class="form-control col-3" sec:authentication="principal.fromSocial"></span>
         </div>
 
         <div class="form-group">
             <label>등급</label>
-            <span class="form-control" sec:authentication="principal.authorities"></span>
+            <span class="form-control col-3" sec:authentication="principal.authorities"></span>
         </div>
 
         <a th:href="@{/member/password-check}" th:action="get" class="btn btn-success">비밀번호 변경</a>
